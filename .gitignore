@@ -1,0 +1,9 @@
+#modules
+/node_modules
+
+#dist
+/dist
+
+#env
+.env
+.env.local
