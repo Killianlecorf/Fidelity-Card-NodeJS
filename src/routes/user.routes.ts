@@ -1,5 +1,6 @@
 import express from 'express';
 import { authenticateUser } from '../middlewares/auth.middleware';
+import { corsMiddleware } from '../middlewares/credentials.middleware';
 import {
     getAllUsers,
     getUserById,
@@ -15,7 +16,7 @@ const router = express.Router();
 router.get('/', getAllUsers);
 router.get('/:id', getUserById);
 router.post('/', createUser);
-router.post('/login', getUserLogin);
+router.post('/login',corsMiddleware, getUserLogin);
 
 // Routes protégées
 router.put('/:id', authenticateUser, updateUser);

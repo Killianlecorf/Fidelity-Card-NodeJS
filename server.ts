@@ -5,12 +5,14 @@ import databaseConnection from './src/config/connectDB';
 import cors from 'cors';
 import UserRoute  from './src/routes/user.routes';
 import cookieParser from 'cookie-parser';
+import { corsMiddleware } from './src/middlewares/credentials.middleware';
 
 dotenv.config()
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(corsMiddleware);
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors());
