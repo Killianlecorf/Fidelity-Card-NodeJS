@@ -95,7 +95,6 @@ export const createUser = async (req: Request, res: Response) => {
       const cookieOptions = {
         httpOnly: true
       };
-  
       res.cookie('token', token, cookieOptions);
   
       // Envoyer la réponse avec le JWT
