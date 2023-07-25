@@ -13,12 +13,12 @@ import {
 const router = express.Router();
 
 // Routes publiques
-router.get('/', getAllUsers);
-router.get('/:id', getUserById);
-router.post('/', createUser);
 router.post('/login',corsMiddleware, getUserLogin);
 
 // Routes protégées
+router.get('/', authenticateUser, getAllUsers);
+router.get('/:id', authenticateUser, getUserById);
+router.post('/', authenticateUser, createUser);
 router.put('/:id', authenticateUser, updateUser);
 router.delete('/:id', authenticateUser, deleteUser);
 

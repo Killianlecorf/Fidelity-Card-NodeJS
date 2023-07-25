@@ -93,7 +93,8 @@ export const createUser = async (req: Request, res: Response) => {
       const token = jwt.sign({ userId: user._id }, secretKey);
 
       const cookieOptions = {
-        httpOnly: true
+        httpOnly: true,
+        path: '/'
       };
       res.cookie('token', token, cookieOptions);
   
