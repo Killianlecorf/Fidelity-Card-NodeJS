@@ -30,6 +30,10 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
+export const isAuth = (req: Request, res: Response) => {
+  return res.json({ isAuthenticated: true });
+}
+
 
 export const createUser = async (req: Request, res: Response) => {
     const userData: IUser = req.body;
