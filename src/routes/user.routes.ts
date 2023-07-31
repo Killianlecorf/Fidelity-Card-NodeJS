@@ -9,12 +9,14 @@ import {
     getUserLogin,
     updateUser,
     deleteUser,
-    isAuth
+    isAuth,
+    deleteCookie
   } from '../controllers/user.controller';
 
 const router = express.Router();
 
 router.get('/isAuth',corsMiddleware, requireAuth, isAuth);
+router.get('/deleteCookieUser', deleteCookie)
 
 // Routes publiques
 router.post('/login',corsMiddleware, getUserLogin);
