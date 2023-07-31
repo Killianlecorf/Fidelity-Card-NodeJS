@@ -34,6 +34,10 @@ export const isAuth = (req: Request, res: Response) => {
   return res.json({ isAuthenticated: true });
 }
 
+export const deleteCookie = (req : Request, res : Response ) => {
+    res.clearCookie('token', { httpOnly: true, expires: new Date(0) }).send('Cookie supprimé !');
+}
+
 
 export const createUser = async (req: Request, res: Response) => {
     const userData: IUser = req.body;
