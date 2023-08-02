@@ -10,7 +10,8 @@ import {
     updateUser,
     deleteUser,
     isAuth,
-    deleteCookie
+    deleteCookie,
+    getInformationUser
   } from '../controllers/user.controller';
 
 const router = express.Router();
@@ -23,6 +24,7 @@ router.post('/login',corsMiddleware, getUserLogin);
 
 // Routes protégées
 router.get('/', authenticateUser, getAllUsers);
+router.get('/user', authenticateUser, getInformationUser);
 router.get('/:id', authenticateUser, getUserById);
 router.post('/', authenticateUser, createUser);
 router.put('/:id', authenticateUser, updateUser);

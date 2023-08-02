@@ -81,6 +81,23 @@ export const createUser = async (req: Request, res: Response) => {
     }
   };
 
+  export const getInformationUser = (req: Request, res: Response) => {
+    const token = req.cookies.token; // Récupérez le JWT depuis l'en-tête de la requête
+
+    try {
+      if (!token) {
+        return res.status(401).json({ message: 'JWT manquant' });
+      }
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET) as { [key: string]: any }; // Vérifiez et décodez le JWT
+
+      // Ici, vous pouvez extraire les informations de l'utilisateur du `decoded` et les renvoyer
+      res.json(decoded);
+    } catch (error) {
+      res.status(401).json({ message: 'JWT invalide' });
+    }
+  };
+
   export const getUserLogin = async (req: Request, res: Response) => {
     const { email, password } = req.body;
   
