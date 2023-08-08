@@ -22,9 +22,9 @@ router.get('/deleteCookieUser', deleteCookie)
 router.post('/login',corsMiddleware, getUserLogin);
 
 // Routes protégées
-router.get('/', authenticateUser, getAllUsers);
+router.get('/', getAllUsers);
 router.get('/:id', authenticateUser, getUserById);
-router.post('/', authenticateUser, createUser);
+router.post('/', createUser);
 router.put('/:id', authenticateUser, updateUser);
 router.delete('/:id', authenticateUser, deleteUser);
 
