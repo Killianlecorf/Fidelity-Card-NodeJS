@@ -6,17 +6,18 @@ interface IUser extends Document {
   password: string;
   theme: {
     mainColor: string;
-  }[];
+    secondaryColor: string;
+  };
 }
 
 const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true, select: false },
-  theme: [{
+  theme: {
     mainColor: { type: String, required: false },
-    
-  }]
+    secondaryColor: { type: String, required: false }
+  }
 });
 
 const User = model<IUser>('User', userSchema);
