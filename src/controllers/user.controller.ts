@@ -43,7 +43,7 @@ export const createUser = async (req: Request, res: Response) => {
     const userData: IUser = req.body;
   
     try {
-      const { email, password, name } = userData;
+      const { email, password, name, theme } = userData;
   
       // Vérifier si l'utilisateur existe déjà dans la base de données
       const existingUser = await User.findOne({ email });
@@ -53,12 +53,17 @@ export const createUser = async (req: Request, res: Response) => {
   
       // Hacher le mot de passe
       const hashedPassword = await bcrypt.hash(password, 10);
-  
+
+
       // Créer l'utilisateur avec le mot de passe haché et le champ name
       const user = new User({
         email,
         password: hashedPassword,
         name,
+        theme: {
+          mainColor: theme.mainColor,
+          secondaryColor: theme.secondaryColor
+        }
         // ... autres données de l'utilisateur
       });
   
