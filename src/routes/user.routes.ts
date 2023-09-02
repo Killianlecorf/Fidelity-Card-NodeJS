@@ -27,10 +27,9 @@ router.post('/login',corsMiddleware, getUserLogin);
 router.get('/', getAllUsers);
 =======
 router.get('/', authenticateUser, getAllUsers);
-router.get('/user', authenticateUser, getInformationUser);
->>>>>>> dev
-router.get('/:id', authenticateUser, getUserById);
-router.post('/', createUser);
+router.get('/getUser', corsMiddleware, authenticateUser, getInformationUser);
+router.get('/:id', corsMiddleware, authenticateUser, getUserById);
+router.post('/', authenticateUser, createUser);
 router.put('/:id', authenticateUser, updateUser);
 router.delete('/:id', authenticateUser, deleteUser);
 
