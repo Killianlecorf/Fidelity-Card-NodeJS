@@ -9,7 +9,7 @@ interface IUser extends Document {
     mainColor: string;
     secondaryColor: string;
   };
-  entreprise : IEntreprise[]
+  entreprise? : IEntreprise[]
 }
 
 const userSchema = new Schema<IUser>({

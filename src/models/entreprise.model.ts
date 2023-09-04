@@ -13,7 +13,7 @@ const entrepriseSchema: Schema<IEntreprise> = new Schema({
   description: {
     type: String,
     required: true,
-  },
+  }
 });
 
 const Entreprise = mongoose.model<IEntreprise>('Entreprise', entrepriseSchema);
