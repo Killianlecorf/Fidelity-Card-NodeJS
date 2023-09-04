@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import databaseConnection from './src/config/connectDB';
 import cors from 'cors';
 import UserRoute  from './src/routes/user.routes';
+import EntrepriseRoute from './src/routes/entreprise.routes';
 import cookieParser from 'cookie-parser';
 import { corsMiddleware } from './src/middlewares/credentials.middleware';
 
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/api/user', UserRoute);
+app.use('/api/entreprise', EntrepriseRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Bonjour, monde !');
