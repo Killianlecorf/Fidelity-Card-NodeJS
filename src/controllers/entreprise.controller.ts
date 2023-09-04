@@ -4,35 +4,35 @@ import Entreprise from '../models/entreprise.model';
 
 // Ajouter une entreprise à un utilisateur
 export const addEntrepriseToUser = async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const { name, description } = req.body;
-
-  try {
-    const user: IUser | null = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: 'Utilisateur introuvable' });
+    const { userId } = req.params;
+    const { name, description } = req.body;
+  
+    try {
+      const user: IUser | null = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'Utilisateur introuvable' });
+      }
+  
+      // Créez une nouvelle entreprise
+      const newEntreprise = new Entreprise({
+        name,
+        description,
+      });
+  
+      // Enregistrez l'entreprise
+      await newEntreprise.save();
+  
+      // Ajoutez l'ID de la nouvelle entreprise à la liste des entreprises de l'utilisateur
+      user?.entreprise?.push(newEntreprise._id); // Utilisez newEntreprise._id pour obtenir l'ID
+      await user.save();
+  
+      res.status(201).json(user);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
     }
+  };
 
-    // Créez une nouvelle entreprise
-    const newEntreprise = new Entreprise({
-      name,
-      description,
-    });
-
-    // Enregistrez l'entreprise
-    await newEntreprise.save();
-
-    // Ajoutez l'entreprise à la liste des entreprises de l'utilisateur
-
-    user?.entreprise?.push(newEntreprise);
-    await user.save();
-
-    res.status(201).json(user);
-  } catch (error: any) {
-    res.status(400).json({ error: error.message });
-  }
-};
 
 
 // Supprimer une entreprise par ID
