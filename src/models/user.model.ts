@@ -1,4 +1,5 @@
 import { Schema, Document, model } from 'mongoose';
+import { IEntreprise } from './entreprise.model';
 
 interface IUser extends Document {
   name: string;
@@ -8,6 +9,7 @@ interface IUser extends Document {
     mainColor: string;
     secondaryColor: string;
   };
+  entreprise?: string[];
 }
 
 const userSchema = new Schema<IUser>({
@@ -17,7 +19,13 @@ const userSchema = new Schema<IUser>({
   theme: {
     mainColor: { type: String, required: false },
     secondaryColor: { type: String, required: false }
-  }
+  },
+  entreprise: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Entreprise'
+    }
+  ]
 });
 
 const User = model<IUser>('User', userSchema);
