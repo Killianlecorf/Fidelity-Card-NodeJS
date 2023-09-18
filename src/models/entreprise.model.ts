@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IEntreprise extends Document {
   name: string;
   description: string;
+  boutique?: string[];
 }
 
 const entrepriseSchema: Schema<IEntreprise> = new Schema({
@@ -13,7 +14,13 @@ const entrepriseSchema: Schema<IEntreprise> = new Schema({
   description: {
     type: String,
     required: true,
-  }
+  },
+  boutique: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Boutique'
+    }
+  ]
 });
 
 const Entreprise = mongoose.model<IEntreprise>('Entreprise', entrepriseSchema);
