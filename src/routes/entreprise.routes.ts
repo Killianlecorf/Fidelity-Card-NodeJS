@@ -13,7 +13,7 @@ from '../controllers/entreprise.controller';
 const router = express.Router();
 
 // Route pour ajouter une entreprise à un utilisateur
-router.post('/:userId/create',authenticateUser, addEntrepriseToUser);
+router.post('/:userId/create',corsMiddleware, authenticateUser, addEntrepriseToUser);
 router.delete('/:entrepriseId',authenticateUser, deleteEntrepriseById);
 router.get('/',corsMiddleware,authenticateUser, getAllEntreprises);
 router.get('/:entrepriseId',corsMiddleware,authenticateUser, getEntrepriseById);
