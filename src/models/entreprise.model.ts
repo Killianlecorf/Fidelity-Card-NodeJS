@@ -4,6 +4,7 @@ export interface IEntreprise extends Document {
   name: string;
   description: string;
   boutique?: string[];
+  client?: string[];
 }
 
 const entrepriseSchema: Schema<IEntreprise> = new Schema({
@@ -19,6 +20,12 @@ const entrepriseSchema: Schema<IEntreprise> = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'Boutique'
+    }
+  ],
+  client: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Client'
     }
   ]
 });
