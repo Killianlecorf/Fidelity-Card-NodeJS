@@ -5,7 +5,7 @@ export interface IBoutique extends Document {
   description: string;
 }
 
-const entrepriseSchema: Schema<IBoutique> = new Schema({
+const boutiqueSchema: Schema<IBoutique> = new Schema({
   name: {
     type: String,
     required: true,
@@ -13,9 +13,9 @@ const entrepriseSchema: Schema<IBoutique> = new Schema({
   description: {
     type: String,
     required: true,
-  },
+  }
 });
 
-const Boutique = mongoose.model<IBoutique>('Boutique', entrepriseSchema);
+const Boutique = mongoose.model<IBoutique>('Boutique', boutiqueSchema);
 
 export default Boutique;

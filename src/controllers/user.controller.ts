@@ -20,7 +20,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 export const getUserById = async (req: Request, res: Response) => {
   const userId = req.params.id;
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate('entreprise');
     if (!user) {
       return res.status(404).json({ error: 'Utilisateur non trouvé.' });
     }
@@ -45,17 +45,14 @@ export const createUser = async (req: Request, res: Response) => {
     try {
       const { email, password, name, theme } = userData;
   
-      // Vérifier si l'utilisateur existe déjà dans la base de données
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(409).json({ error: 'Cet utilisateur existe déjà.' });
       }
   
-      // Hacher le mot de passe
       const hashedPassword = await bcrypt.hash(password, 10);
 
 
-      // Créer l'utilisateur avec le mot de passe haché et le champ name
       const user = new User({
         email,
         password: hashedPassword,
@@ -87,16 +84,15 @@ export const createUser = async (req: Request, res: Response) => {
   };
 
   export const getInformationUser = (req: Request, res: Response) => {
-    const token = req.cookies.token; // Récupérez le JWT depuis l'en-tête de la requête
+    const token = req.cookies.token; 
 
     try {
       if (!token) {
         return res.status(401).json({ message: 'JWT manquant' });
       }
 
-      const decoded = jwt.verify(token, process.env.JWT_SECRET) as { [key: string]: any }; // Vérifiez et décodez le JWT
+      const decoded = jwt.verify(token, process.env.JWT_SECRET) as { [key: string]: any };
 
-      // Ici, vous pouvez extraire les informations de l'utilisateur du `decoded` et les renvoyer
       res.json(decoded);
     } catch (error) {
       res.status(401).json({ message: 'JWT invalide' });
@@ -107,7 +103,6 @@ export const createUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
   
     try {
-      // Vérifier si l'utilisateur existe dans la base de données
       const user = await User.findOne({ email }).select('+password');
       if (!user) {
         return res.status(401).json({ error: 'L\'adresse e-mail est incorrect.' });
@@ -118,7 +113,6 @@ export const createUser = async (req: Request, res: Response) => {
         return res.status(401).json({ error: 'le mot de passe est incorrect.' });
       }
   
-      // Générer un JWT
       const secretKey = process.env.JWT_SECRET; 
       const token = jwt.sign({ userId: user._id }, secretKey);
 
@@ -127,8 +121,7 @@ export const createUser = async (req: Request, res: Response) => {
         path: '/'
       };
       res.cookie('token', token, cookieOptions);
-  
-      // Envoyer la réponse avec le JWT
+
       res.json({ user, token });
     } catch (error) {
       console.error('Login error:', error);
@@ -142,9 +135,7 @@ export const updateUser = async (req: Request, res: Response) => {
     const userData: IUser = req.body;
   
     try {
-      // Vérifier si le mot de passe est modifié
       if (userData.password) {
-        // Hasher le nouveau mot de passe
         const hashedPassword = await bcrypt.hash(userData.password, 10);
         userData.password = hashedPassword;
       }

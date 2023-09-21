@@ -1,5 +1,4 @@
 import { Schema, Document, model } from 'mongoose';
-import { IEntreprise } from './entreprise.model';
 
 interface IUser extends Document {
   name: string;
