@@ -112,7 +112,7 @@ export const getEntrepriseById = async (req: Request, res: Response) => {
   
     try {
       // Recherchez l'entreprise par ID
-      const entreprise = await Entreprise.findById(entrepriseId);
+      const entreprise = await Entreprise.findById(entrepriseId).populate("boutique");
   
       if (!entreprise) {
         return res.status(404).json({ message: 'Entreprise introuvable' });

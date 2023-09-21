@@ -3,7 +3,8 @@ import { authenticateUser } from '../middlewares/auth.middleware';
 // import { requireAuth } from '../middlewares/requireAuth.middleware';
 // import { corsMiddleware } from '../middlewares/credentials.middleware';
 import {
-    addBoutiqueToEntreprise
+    addBoutiqueToEntreprise,
+    getAllBoutique
   } from '../controllers/boutique.controller';
 
 const router = express.Router();
@@ -14,5 +15,6 @@ const router = express.Router();
 
 // Routes protégées
 router.post('/:entrepriseId/create', authenticateUser, addBoutiqueToEntreprise);
+router.get('/', authenticateUser, getAllBoutique);
 
 export default router;

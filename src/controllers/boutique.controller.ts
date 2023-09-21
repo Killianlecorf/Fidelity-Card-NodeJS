@@ -30,3 +30,13 @@ export const addBoutiqueToEntreprise = async (req: Request, res: Response) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const getAllBoutique = async (req: Request, res: Response) => {
+  try {
+    const boutiques = await Boutique.find();
+
+    res.status(200).json(boutiques);
+  } catch (error:any) {
+    res.status(500).json({ error: error.message });
+  }
+};
