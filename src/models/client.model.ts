@@ -2,7 +2,8 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IClient extends Document {
   name: string;
-  description: string;
+  lname: string;
+  email?: string;
 }
 
 const entrepriseSchema: Schema<IClient> = new Schema({
@@ -10,10 +11,14 @@ const entrepriseSchema: Schema<IClient> = new Schema({
     type: String,
     required: true,
   },
-  description: {
+  lname: {
     type: String,
     required: true,
   },
+  email: {
+    type: String,
+    required: true,
+  }
 });
 
 const Client = mongoose.model<IClient>('Client', entrepriseSchema);
