@@ -17,6 +17,6 @@ router.post('/:userId/create',corsMiddleware, authenticateUser, addEntrepriseToU
 router.delete('/:entrepriseId',corsMiddleware,authenticateUser, deleteEntrepriseById);
 router.get('/',corsMiddleware,authenticateUser, getAllEntreprises);
 router.get('/:entrepriseId',corsMiddleware,authenticateUser, getEntrepriseById);
-router.put('/:entrepriseId',authenticateUser, updateEntrepriseById);
+router.put('/:entrepriseId', corsMiddleware, authenticateUser, updateEntrepriseById);
 
 export default router;
