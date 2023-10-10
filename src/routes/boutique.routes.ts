@@ -15,7 +15,7 @@ const router = express.Router();
 // Routes publiques
 
 // Routes protégées
-router.post('/:entrepriseId/create', authenticateUser, addBoutiqueToEntreprise);
+router.post('/:entrepriseId/create',corsMiddleware, authenticateUser, addBoutiqueToEntreprise);
 router.get('/', authenticateUser, getAllBoutique);
 router.get('/:entrepriseId/boutiques',corsMiddleware, authenticateUser, getBoutiquesByEntrepriseId);
 
