@@ -25,7 +25,7 @@ export const addBoutiqueToEntreprise = async (req: Request, res: Response) => {
     entreprise?.boutique?.push(newBoutique._id);
     await entreprise.save();
 
-    res.status(201).json(entreprise);
+    res.status(201).json({message: 'Boutique créer avec succès' ,entreprise});
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
