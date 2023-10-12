@@ -62,3 +62,35 @@ export const getBoutiquesByEntrepriseId = async (req: Request, res: Response) =>
     res.status(500).json({ message: 'Erreur lors de la récupération des boutiques de l\'entreprise' });
   }
 };
+
+// Fonction pour supprimer une boutique d'une entreprise
+export const deleteBoutique = async (req: Request, res: Response) => {
+  const entrepriseId: string = req.params.entrepriseId;
+  const boutiqueId: string = req.params.boutiqueId;
+
+  try {
+      // Recherche de l'entreprise par ID
+      const entreprise: IEntreprise | null = await Entreprise.findById(entrepriseId);
+
+      if (!entreprise) {
+          return res.status(404).json({ message: 'Entreprise non trouvée.' });
+      }
+
+      // Vérification si la boutique à supprimer est dans la liste des boutiques de l'entreprise
+      const boutiqueIndex: number = entreprise.boutique.indexOf(boutiqueId);
+      if (boutiqueIndex === -1) {
+          return res.status(404).json({ message: 'Boutique non trouvée dans cette entreprise.' });
+      }
+
+      // Suppression de la boutique de la liste
+      entreprise?.boutique?.splice(boutiqueIndex, 1);
+
+      // Sauvegarde de l'entreprise mise à jour
+      await entreprise.save();
+
+      res.json({ message: 'Boutique supprimée avec succès.' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Une erreur est survenue lors de la suppression de la boutique.' });
+  }
+};
