@@ -1,0 +1,14 @@
+version: "3.4"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: dockerfile
+      target: development
+    # volumes:
+    #   - ./:/usr/src/app
+      # - ./test-modules:/usr/src/app/node_modules
+    ports:
+      - 5152:5152
+    # command: npm run dev

@@ -5,7 +5,8 @@
   "main": "server.ts",
   "type": "commonjs",
   "scripts": {
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\""
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
