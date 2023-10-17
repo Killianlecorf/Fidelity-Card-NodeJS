@@ -3,7 +3,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IEntreprise extends Document {
   name: string;
   description: string;
-  boutique?: string[];
+  boutique: string[];
   client?: string[];
 }
 
