@@ -4,10 +4,11 @@ services:
   api:
     build:
       context: .
+      dockerfile: dockerfile
       target: development
-    volumes:
-      - ./:/usr/src/app
-      - /usr/src/app/node_modules
+    # volumes:
+    #   - ./:/usr/src/app
+      # - ./test-modules:/usr/src/app/node_modules
     ports:
       - 5152:5152
-    command: npm run dev
+    # command: npm run dev

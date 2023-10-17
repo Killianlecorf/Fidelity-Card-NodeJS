@@ -32,9 +32,14 @@ WORKDIR /usr/src/app
 
 COPY package*.json .
 
-RUN npm install
+# RUN npm install
+RUN npm install --include=dev
 
 COPY . .
+
+CMD [ "npm", "run", "dev" ]
+
+FROM development as build
 
 RUN npm run build
 
@@ -46,10 +51,12 @@ ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /usr/src/app
 
+COPY .env .env
+
 COPY package*.json .
 
 RUN npm install
 
-COPY --from=development /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/dist ./dist
 
 CMD ["node", "dist/server.js"]
