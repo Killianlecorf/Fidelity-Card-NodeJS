@@ -6,7 +6,8 @@ import {
     addBoutiqueToEntreprise,
     getAllBoutique,
     getBoutiquesByEntrepriseId,
-    deleteBoutique
+    deleteBoutique,
+    updateBoutique
   } from '../controllers/boutique.controller';
 
 const router = express.Router();
@@ -20,5 +21,6 @@ router.post('/:entrepriseId/create',corsMiddleware, authenticateUser, addBoutiqu
 router.get('/',corsMiddleware, authenticateUser, getAllBoutique);
 router.get('/:entrepriseId/boutiques',corsMiddleware, authenticateUser, getBoutiquesByEntrepriseId);
 router.delete('/:entrepriseId/:boutiqueId',corsMiddleware, authenticateUser, deleteBoutique)
+router.put('/:entrepriseId/:boutiqueId',corsMiddleware, authenticateUser, updateBoutique)
 
 export default router;
