@@ -27,7 +27,13 @@ const entrepriseSchema: Schema<IEntreprise> = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Client'
     }
-  ]
+  ],
+  // Modality: [
+  //   {
+  //     type: String,
+  //     require: true
+  //   }
+  // ]
 });
 
 const Entreprise = mongoose.model<IEntreprise>('Entreprise', entrepriseSchema);
