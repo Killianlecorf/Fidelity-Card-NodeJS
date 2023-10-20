@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Entreprise, { IEntreprise } from '../models/entreprise.model';
-import Boutique from '../models/boutique.model';
+import Boutique, {IBoutique} from '../models/boutique.model';
 
 // Ajouter une boutique à une entreprise
 export const addBoutiqueToEntreprise = async (req: Request, res: Response) => {
@@ -94,3 +94,38 @@ export const deleteBoutique = async (req: Request, res: Response) => {
       res.status(500).json({ message: 'Une erreur est survenue lors de la suppression de la boutique.' });
   }
 };
+
+export async function updateBoutique(req: Request, res: Response) {
+  try {
+    const entrepriseId: string = req.params.entrepriseId;
+    const boutiqueId: string = req.params.boutiqueId;
+    const updatedData: IBoutique = req.body;
+
+    const entreprise: IEntreprise | null = await Entreprise.findById(entrepriseId);
+
+    if (!entreprise) {
+      return res.status(404).json({ message: "Entreprise non trouvée" });
+    }
+
+    const boutique: IBoutique | null = await Boutique.findById(boutiqueId);
+
+    if (!boutique) {
+      return res.status(404).json({ message: "Boutique non trouvée" });
+    }
+
+    if (updatedData.name) {
+      boutique.name = updatedData.name;
+    }
+
+    if (updatedData.description) {
+      boutique.description = updatedData.description;
+    }
+
+    await boutique.save();
+
+    res.status(200).json({ message: "Boutique mise à jour avec succès" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur lors de la mise à jour de la boutique" });
+  }
+}

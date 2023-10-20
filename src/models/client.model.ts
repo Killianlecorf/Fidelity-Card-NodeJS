@@ -4,9 +4,13 @@ export interface IClient extends Document {
   name: string;
   lname: string;
   email?: string;
+  address?: string;
+  spendAmount?: number;
+  editClientDate: string;
+  userId: string;
 }
 
-const entrepriseSchema: Schema<IClient> = new Schema({
+const ClientSchema: Schema<IClient> = new Schema({
   name: {
     type: String,
     required: true,
@@ -18,9 +22,26 @@ const entrepriseSchema: Schema<IClient> = new Schema({
   email: {
     type: String,
     required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  spendAmount: {
+    type: Number,
+    require: true,
+  },
+  editClientDate: {
+    type: String,
+    require: true,
+  },
+  userId: {
+    type: String,
+    require: true,
   }
+
 });
 
-const Client = mongoose.model<IClient>('Client', entrepriseSchema);
+const Client = mongoose.model<IClient>('Client', ClientSchema);
 
 export default Client;
