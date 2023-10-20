@@ -4,8 +4,9 @@ export interface IClient extends Document {
   name: string;
   lname: string;
   email?: string;
+  address?: string;
   spendAmount?: number;
-  editDate: Date;
+  editClientDate: string;
 }
 
 const ClientSchema: Schema<IClient> = new Schema({
@@ -21,12 +22,16 @@ const ClientSchema: Schema<IClient> = new Schema({
     type: String,
     required: true,
   },
+  address: {
+    type: String,
+    required: true,
+  },
   spendAmount: {
     type: Number,
     require: true,
   },
-  editDate: {
-    type: Date,
+  editClientDate: {
+    type: String,
     require: true,
   }
 });

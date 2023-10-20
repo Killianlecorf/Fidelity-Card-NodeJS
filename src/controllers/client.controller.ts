@@ -1,19 +1,31 @@
 import { Request, Response } from 'express';
-import Client from '../models/client.model';
+import Client, { IClient } from '../models/client.model';
+import GetMouthName  from "../Utils/GetMouthName";
 
 // Ajouter un client
 export const createClient = async (req: Request, res: Response) => {
   try {
-    const { name, lname, email, spendAmount, editDate } = req.body;
-    const client = new Client({
-      name,
-      lname,
-      email,
-      spendAmount,
-      editDate,
-    });
+    const { name, lname, email, address, spendAmount } = req.body;
 
-    const savedClient = await client.save();
+    const newClient = new Client();
+    newClient.name = name;
+    newClient.lname = lname;
+    newClient.email = email;
+    newClient.address = address;
+    newClient.spendAmount = spendAmount;
+
+    // Obtenir la date actuelle sous forme d'objet Date
+    const currentDate = new Date();
+
+    const day = currentDate.getDate(); 
+    const month = currentDate.getMonth() + 1;
+    const monthString = GetMouthName(month)
+    const hour = currentDate.getHours();
+
+    newClient.editClientDate = `${day} ${monthString} à ${hour}H`;
+
+    const savedClient = await newClient.save();
+
     res.status(201).json(savedClient);
   } catch (error) {
     res.status(400).json({ error: "Impossible d'ajouter le client" });
