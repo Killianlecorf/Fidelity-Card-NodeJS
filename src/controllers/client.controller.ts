@@ -5,7 +5,7 @@ import GetMouthName  from "../Utils/GetMouthName";
 // Ajouter un client
 export const createClient = async (req: Request, res: Response) => {
   try {
-    const { name, lname, email, address, spendAmount } = req.body;
+    const { name, lname, email, address } = req.body;
     const {userId} = req.params
 
     const newClient = new Client();
@@ -13,7 +13,7 @@ export const createClient = async (req: Request, res: Response) => {
     newClient.lname = lname;
     newClient.email = email;
     newClient.address = address;
-    newClient.spendAmount = spendAmount;
+    newClient.spendAmount = 0;
     newClient.userId = userId;
 
     // Obtenir la date actuelle sous forme d'objet Date
