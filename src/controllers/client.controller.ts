@@ -20,7 +20,7 @@ export const createClient = async (req: Request, res: Response) => {
     const currentDate = new Date();
 
     const day = currentDate.getDate(); 
-    const month = currentDate.getMonth() + 1;
+    const month = currentDate.getMonth() ;
     const monthString = GetMouthName(month)
     const hour = currentDate.getHours();
 
