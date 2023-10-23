@@ -1,32 +1,53 @@
 import { Request, Response } from 'express';
-import Client from '../models/client.model';
+import Client, { IClient } from '../models/client.model';
+import GetMouthName  from "../Utils/GetMouthName";
 
 // Ajouter un client
 export const createClient = async (req: Request, res: Response) => {
   try {
-    const { name, lname, email, spendAmount, editDate } = req.body;
-    const client = new Client({
-      name,
-      lname,
-      email,
-      spendAmount,
-      editDate,
-    });
+    const { name, lname, email, address } = req.body;
+    const {userId} = req.params
 
-    const savedClient = await client.save();
+    const newClient = new Client();
+    newClient.name = name;
+    newClient.lname = lname;
+    newClient.email = email;
+    newClient.address = address;
+    newClient.spendAmount = 0;
+    newClient.userId = userId;
+
+    // Obtenir la date actuelle sous forme d'objet Date
+    const currentDate = new Date();
+
+    const day = currentDate.getDate(); 
+    const month = currentDate.getMonth() + 1;
+    const monthString = GetMouthName(month)
+    const hour = currentDate.getHours();
+
+    newClient.editClientDate = `${day} ${monthString} à ${hour}H`;
+
+    const savedClient = await newClient.save();
+
     res.status(201).json(savedClient);
   } catch (error) {
     res.status(400).json({ error: "Impossible d'ajouter le client" });
   }
 };
 
-// Afficher tous les clients
-export const getAllClients = async (req: Request, res: Response) => {
+
+export const getClientsByUserId = async (req: Request, res: Response) => {
+  const userId = req.params.userId; 
+
   try {
-    const clients = await Client.find();
+    const clients = await Client.find({ userId: userId });
+
+    if (clients.length === 0) {
+      return res.status(404).json({ error: "Aucun client trouvé pour cet utilisateur" });
+    }
+
     res.json(clients);
   } catch (error) {
-    res.status(500).json({ error: 'Erreur lors de la récupération des clients' });
+    res.status(500).json({ error: 'Erreur lors de la récupération des clients de l\'utilisateur' });
   }
 };
 
