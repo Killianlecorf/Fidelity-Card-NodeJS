@@ -19,7 +19,7 @@ const router = express.Router();
 // Routes protégées
 router.post('/:userId', corsMiddleware, requireAuth, authenticateUser, createClient);
 router.get('/:userId', corsMiddleware, requireAuth, authenticateUser, getClientsByUserId);
-router.get('/:client', corsMiddleware, requireAuth, authenticateUser, getClientById);
+router.get('/informations/:clientId', corsMiddleware, requireAuth, authenticateUser, getClientById);
 router.delete('/:client', corsMiddleware, requireAuth, authenticateUser, deleteClient)
 router.put('/:client', corsMiddleware, requireAuth, authenticateUser, updateClient)
 
