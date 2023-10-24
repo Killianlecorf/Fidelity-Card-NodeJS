@@ -5,13 +5,14 @@ import GetMouthName  from "../Utils/GetMouthName";
 // Ajouter un client
 export const createClient = async (req: Request, res: Response) => {
   try {
-    const { name, lname, email, address } = req.body;
+    const { name, lname, email, phoneNumber,  address } = req.body;
     const {userId} = req.params
 
     const newClient = new Client();
     newClient.name = name;
     newClient.lname = lname;
     newClient.email = email;
+    newClient.phoneNumber = phoneNumber;
     newClient.address = address;
     newClient.spendAmount = 0;
     newClient.userId = userId;
