@@ -3,6 +3,7 @@ import { User, IUser } from '../models/user.model';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
+import { upload } from '../middlewares/downloadFile.middleware';
 
 dotenv.config();
 
@@ -164,3 +165,15 @@ export const updateUser = async (req: Request, res: Response) => {
       res.status(500).json({ error: 'Une erreur est survenue lors de la suppression de l\'utilisateur.' });
     }
   };
+
+export const handleFileUpload = upload.single('file'); // Assurez-vous que 'file' correspond au nom du champ du formulaire.
+
+export const uploadFile = (req: Request, res: Response) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'Aucun fichier n\'a été téléchargé' });
+  }
+
+  // Enregistrez le chemin du fichier ou les informations pertinentes dans votre base de données.
+
+  res.json({ message: 'Fichier téléchargé avec succès' });
+};

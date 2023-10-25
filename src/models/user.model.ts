@@ -5,6 +5,7 @@ interface IUser extends Document {
   email: string;
   password: string;
   theme: {
+    logo: Buffer;
     mainColor: string;
     secondaryColor: string;
   };
@@ -16,6 +17,7 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true },
   password: { type: String, required: true, select: false },
   theme: {
+    logo: Buffer,
     mainColor: { type: String, required: false },
     secondaryColor: { type: String, required: false }
   },
