@@ -12,8 +12,6 @@ import {
     isAuth,
     deleteCookie,
     getInformationUser,
-    handleFileUpload,
-    uploadFile
   } from '../controllers/user.controller';
 
 const router = express.Router();
@@ -31,6 +29,5 @@ router.get('/:id', corsMiddleware, authenticateUser, getUserById);
 router.post('/',corsMiddleware, authenticateUser, createUser);
 router.put('/:id',corsMiddleware, authenticateUser, updateUser);
 router.delete('/:id', corsMiddleware, authenticateUser, deleteUser);
-router.post('/upload', corsMiddleware, authenticateUser, handleFileUpload, uploadFile);
 
 export default router;
