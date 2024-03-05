@@ -9,6 +9,16 @@ export const createClient = async (req: Request, res: Response) => {
     const { name, lname, email, phoneNumber,  address } = req.body;
     const {userId} = req.params
 
+
+    if (!name || !lname || !email || !phoneNumber || !address) {
+      return res.status(400).json({error: "Veuillez remplir tous les champs"})
+    }
+
+    const existingClient = await Client.findOne({ phoneNumber });
+    if (existingClient) {
+      return res.status(400).json({ error: "Ce numéro de téléphone est déjà utilisé" });
+    }
+
     const newClient = new Client()
     newClient.name = name;
     newClient.lname = lname;
@@ -24,8 +34,9 @@ export const createClient = async (req: Request, res: Response) => {
     const month = currentDate.getMonth() ;
     const monthString = GetMouthName(month)
     const hour = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
 
-    newClient.editClientDate = `${day} ${monthString} à ${hour}H`;
+    newClient.editClientDate = `${day} ${monthString} à ${hour}H${minutes}`;
 
     const savedClient = await newClient.save();
 
