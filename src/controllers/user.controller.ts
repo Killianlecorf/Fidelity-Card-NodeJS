@@ -44,6 +44,10 @@ export const createUser = async (req: Request, res: Response) => {
   
     try {
       const { email, password, name, theme } = userData;
+
+      if (!email || !password || !name || !theme) {
+        return res.status(400).json({error: 'Vous devez remplir tout les champs'})
+      }
   
       const existingUser = await User.findOne({ email });
       if (existingUser) {
