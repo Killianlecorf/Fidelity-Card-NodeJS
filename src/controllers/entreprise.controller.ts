@@ -6,12 +6,17 @@ import Entreprise from '../models/entreprise.model';
 export const addEntrepriseToUser = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const { name, description } = req.body;
-  
+    
     try {
       const user: IUser | null = await User.findById(userId);
   
       if (!user) {
         return res.status(404).json({ message: 'Utilisateur introuvable' });
+      }
+
+      const length = user.entreprise?.length || 0;
+      if (length >= 3 ) {
+        return
       }
   
       // Créez une nouvelle entreprise
