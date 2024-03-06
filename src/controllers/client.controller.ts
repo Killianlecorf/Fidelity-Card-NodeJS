@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import Client, { IClient } from '../models/client.model';
-import GetMouthName  from "../Utils/GetMouthName";
+import GetMonthName  from "../Utils/GetMonthName";
 import mongoose from 'mongoose';
+import isValidEmail from "../Utils/isValidationEmail";
 
 // Ajouter un client
 export const createClient = async (req: Request, res: Response) => {
@@ -14,25 +15,37 @@ export const createClient = async (req: Request, res: Response) => {
       return res.status(400).json({error: "Veuillez remplir tous les champs"})
     }
 
+    const existingEmailClient = await Client.findOne({ email })
+    if (existingEmailClient) {
+      return res.status(400).json({error: "Ce mail est déja utiliser"})
+    }
+
     const existingClient = await Client.findOne({ phoneNumber });
     if (existingClient) {
       return res.status(400).json({ error: "Ce numéro de téléphone est déjà utilisé" });
     }
+    
+
 
     const newClient = new Client()
     newClient.name = name;
     newClient.lname = lname;
-    newClient.email = email;
+    newClient.email = email || "";
     newClient.phoneNumber = phoneNumber;
     newClient.address = address;
     newClient.spendAmount = 0;
     newClient.userId = userId;
+    newClient.isAmount = false
+
+    if (newClient.email && !isValidEmail(newClient.email)) {
+      return res.status(400).json({error : "Votre format de mail n'est pas bon "})
+    }
 
     const currentDate = new Date();
 
     const day = currentDate.getDate(); 
     const month = currentDate.getMonth() ;
-    const monthString = GetMouthName(month)
+    const monthString = GetMonthName(month)
     const hour = currentDate.getHours();
     const minutes = currentDate.getMinutes();
 

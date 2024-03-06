@@ -9,6 +9,7 @@ export interface IClient extends Document {
   spendAmount?: number;
   editClientDate: string;
   userId: string;
+  isAmount: boolean;
 }
 
 const ClientSchema: Schema<IClient> = new Schema({
@@ -43,6 +44,10 @@ const ClientSchema: Schema<IClient> = new Schema({
   userId: {
     type: String,
     required: true,
+  },
+  isAmount:{
+    type: Boolean,
+    require: true
   }
 });
 
