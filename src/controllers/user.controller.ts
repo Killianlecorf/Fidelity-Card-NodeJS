@@ -3,8 +3,21 @@ import { User, IUser } from '../models/user.model';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
+import isValidEmail from '../Utils/isValidationEmail';
 
 dotenv.config();
+
+// redirection /redirect
+
+export const getRedirection = async (req: Request, res: Response) => {
+  const token = req.cookies.token;
+
+  if (token) {
+    res.status(302).json({ redirectUrl: '/home' });
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+}
 
 // GET /users
 export const getAllUsers = async (req: Request, res: Response) => {
@@ -48,7 +61,11 @@ export const createUser = async (req: Request, res: Response) => {
       if (!email || !password || !name || !theme) {
         return res.status(400).json({error: 'Vous devez remplir tout les champs'})
       }
-  
+      
+      if (isValidEmail(email)) {
+        return res.status(400).json({error: "Veuillez saisir un bon format de mail"})
+      }
+
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(409).json({ error: 'Cet utilisateur existe déjà.' });
@@ -64,6 +81,10 @@ export const createUser = async (req: Request, res: Response) => {
         theme: {
           mainColor: theme.mainColor,
           secondaryColor: theme.secondaryColor
+        },
+        modality: {
+          amountMax: 0,
+          amountReduction: 0
         }
         // ... autres données de l'utilisateur
       });
@@ -107,6 +128,7 @@ export const createUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
   
     try {
+      
       const user = await User.findOne({ email }).select('+password');
       if (!user) {
         return res.status(401).json({ error: 'L\'adresse e-mail est incorrect.' });

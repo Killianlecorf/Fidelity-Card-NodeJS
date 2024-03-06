@@ -5,16 +5,14 @@ interface IUser extends Document {
   email: string;
   password: string;
   theme: {
-    // uploadedFiles: [
-    //   {
-    //     fileName:  string ,
-    //     filePath: string ,
-    //     uploadedBy: string,
-    //   }],
     mainColor: string;
     secondaryColor: string;
   };
   entreprise?: string[];
+  modality: {
+    amountMax: number,
+    amountReduction: number
+  }
 }
 
 const userSchema = new Schema<IUser>({
@@ -22,13 +20,6 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true },
   password: { type: String, required: true, select: false },
   theme: {
-    // uploadedFiles: [
-    //   {
-    //     fileName: { type: String },
-    //     filePath: { type: String },
-    //     uploadedBy: { type: Schema.Types.ObjectId, ref: 'User' },
-    //   },
-    // ],
     mainColor: { type: String, required: false },
     secondaryColor: { type: String, required: false },
   },
@@ -37,7 +28,11 @@ const userSchema = new Schema<IUser>({
       type: Schema.Types.ObjectId,
       ref: 'Entreprise'
     }
-  ]
+  ],
+  modality: {
+    amountMax: { type: Number},
+    amountReduction: { type:Number }
+  }
 });
 
 const User = model<IUser>('User', userSchema);
