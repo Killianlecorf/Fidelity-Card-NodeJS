@@ -3,6 +3,7 @@ import { authenticateUser } from '../middlewares/auth.middleware';
 import { requireAuth } from '../middlewares/requireAuth.middleware';
 import { corsMiddleware } from '../middlewares/credentials.middleware';
 import {
+    getRedirection,
     getAllUsers,
     getUserById,
     createUser,
@@ -18,6 +19,7 @@ const router = express.Router();
 
 router.get('/isAuth',corsMiddleware, requireAuth, isAuth);
 router.get('/deleteCookieUser', deleteCookie)
+router.get('/redirect', corsMiddleware, getRedirection);
 
 // Routes publiques
 router.post('/login',corsMiddleware, getUserLogin);
