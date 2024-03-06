@@ -83,8 +83,8 @@ export const createUser = async (req: Request, res: Response) => {
           secondaryColor: theme.secondaryColor
         },
         modality: {
-          amountMax: 0,
-          amountReduction: 0
+          amountMax: 300,
+          amountReduction: 10
         }
         // ... autres données de l'utilisateur
       });
