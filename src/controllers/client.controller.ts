@@ -155,37 +155,6 @@ export const editAmountClient = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Client non trouvé' });
     }
 
-    const userAmountMax = user?.modality.amountMax || 300
-    const clienAmount = client?.spendAmount || 10
-
-    if ( userAmountMax < clienAmount) {
-      const updatedClient = await Client.findOneAndUpdate(
-        { _id: req.params.clientId },
-        { $set: { isAmount: true } },
-        { new: true }
-      );
-
-      if (!updatedClient) {
-        return res.status(404).json({ error: 'Client non trouvé' });
-      }
-  
-      return res.json(updatedClient);
-    }
-
-    if ( userAmountMax > clienAmount) {
-      const updatedClient = await Client.findOneAndUpdate(
-        { _id: req.params.clientId },
-        { $set: { isAmount: false } },
-        { new: true }
-      );
-
-      if (!updatedClient) {
-        return res.status(404).json({ error: 'Client non trouvé' });
-      }
-  
-      return res.json(updatedClient);
-    }
-
     return res.json(updatedClientAmount);
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de la mise à jour du client' });
