@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import Client, { IClient } from '../models/client.model';
 import GetMonthName  from "../Utils/GetMonthName";
 import mongoose from 'mongoose';
-import isValidEmail from "../Utils/isValidationEmail";
+import { isValidEmail } from '../Utils/isValidationEmail';
 import { User, IUser } from "../models/user.model"
 
 // Ajouter un client

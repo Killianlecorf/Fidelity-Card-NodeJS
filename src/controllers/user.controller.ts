@@ -56,25 +56,20 @@ export const createUser = async (req: Request, res: Response) => {
   const { verificationCode } = req.body;
 
   try {
-    if (!verificationCode ) {
-      return res.status(400).json({ error: 'Veuillez entrer votre email et code de vérification.' });
-    }
-
     const pendingUser = await PendingUser.findOne({ verificationCode });
+
     if (!pendingUser) {
-      return res.status(404).json({ error: 'Code de vérification ou email incorrect.' });
+      return res.status(404).json({ error: 'Code de vérification incorrect.' });
     }
 
-    const existingUser = await User.findOne({ verificationCode });
-    if (existingUser) {
-      return res.status(409).json({ error: 'Cet utilisateur existe déjà.' });
+    const currentTime = Date.now();
+    if (pendingUser.codeExpires.getTime() < currentTime) {
+      return res.status(400).json({ error: 'Le code de vérification a expiré.' });
     }
-
-    const hashedPassword = await bcrypt.hash(pendingUser.password, 10);
 
     const newUser = new User({
       email: pendingUser.email,
-      password: hashedPassword,
+      password: pendingUser.password,
       name: pendingUser.name,
       lname: pendingUser.lname,
       theme: {
@@ -94,15 +89,9 @@ export const createUser = async (req: Request, res: Response) => {
     const secretKey = process.env.JWT_SECRET; 
     const token = jwt.sign({ userId: newUser._id }, secretKey);
 
-    const cookieOptions = {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    };
-
-    res.cookie('token', token, cookieOptions);
-    res.status(201).json({ user: newUser, token });
+    res.json({ user: newUser, token });
   } catch (error) {
-    console.log(error);
+    console.error('Error creating user:', error);
     res.status(500).json({ error: 'Une erreur est survenue lors de la création de l\'utilisateur.' });
   }
 };
