@@ -4,13 +4,12 @@ import bodyParser from 'body-parser';
 import databaseConnection from './src/config/connectDB';
 import cors from 'cors';
 import UserRoute  from './src/routes/user.routes';
-// import UploadRoute  from './src/routes/upload.routes';
 import EntrepriseRoute from './src/routes/entreprise.routes';
 import BoutiqueRoute from './src/routes/boutique.routes';
 import ClientRoute from './src/routes/client.routes';
+import PendingUser from './src/routes/pendingUser.routes';
 import cookieParser from 'cookie-parser';
 import { corsMiddleware } from './src/middlewares/credentials.middleware';
-// import fileUpload from 'express-fileupload';
 
 dotenv.config()
 
@@ -24,7 +23,6 @@ app.use(cors({
   credentials: true
 }));
 
-// app.use(fileUpload());
 app.use(corsMiddleware);
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -33,7 +31,7 @@ app.use('/api/user', UserRoute);
 app.use('/api/entreprise', EntrepriseRoute);
 app.use('/api/boutique', BoutiqueRoute);
 app.use('/api/client', ClientRoute);
-// app.use('/api/upload', UploadRoute);
+app.use('/api/ispending', PendingUser);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Bonjour, monde !');

@@ -3,6 +3,7 @@ import Client, { IClient } from '../models/client.model';
 import GetMonthName  from "../Utils/GetMonthName";
 import mongoose from 'mongoose';
 import isValidEmail from "../Utils/isValidationEmail";
+import { User, IUser } from "../models/user.model"
 
 // Ajouter un client
 export const createClient = async (req: Request, res: Response) => {
@@ -113,8 +114,9 @@ export const updateClient = async (req: Request, res: Response) => {
 
 // Supprimer un client par son ID
 export const deleteClient = async (req: Request, res: Response) => {
+  const clientId = req.params.clientId;
   try {
-    const deletedClient = await Client.findByIdAndRemove(req.params.id);
+    const deletedClient = await Client.findByIdAndRemove(clientId);
     if (!deletedClient) {
       return res.status(404).json({ error: 'Client non trouvé' });
     }
@@ -123,3 +125,38 @@ export const deleteClient = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Erreur lors de la suppression du client' });
   }
 };
+
+export const editAmountClient = async (req: Request, res: Response) => {
+  const clientId = req.params.clientId;
+  const { amount } = req.body;
+
+  try {
+    
+    if (!amount) {
+      res.status(400).json({error: "Aucun montant n'a étais ajouté"})
+    }
+
+    const user = await User.findById(req.user.id)
+    const client = await Client.findById(clientId)
+
+    if (!client) {
+      return res.status(404).json({ error: 'Client non trouvé' });
+    }
+
+    const newSpendAmount = (client.spendAmount || 0) + amount;
+
+    const updatedClientAmount = await Client.findOneAndUpdate(
+      { _id: clientId },
+      { $set: { spendAmount: newSpendAmount } },
+      { new: true }
+    );
+
+    if (!updatedClientAmount) {
+      return res.status(404).json({ error: 'Client non trouvé' });
+    }
+
+    return res.json(updatedClientAmount);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la mise à jour du client' });
+  }
+}

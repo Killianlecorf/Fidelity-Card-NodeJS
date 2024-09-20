@@ -62,7 +62,6 @@ export const deleteEntrepriseById = async (req: Request, res: Response) => {
         // Supprimez l'entreprise de la liste des entreprises de l'utilisateur
         user.entreprise = user.entreprise?.filter((id) => id.toString() !== entrepriseId);
   
-        // Enregistrez manuellement les modifications de l'utilisateur
         await user.save();
       }
   

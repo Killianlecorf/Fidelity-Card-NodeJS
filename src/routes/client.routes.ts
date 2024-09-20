@@ -3,6 +3,7 @@ import { authenticateUser } from '../middlewares/auth.middleware';
 import { requireAuth } from '../middlewares/requireAuth.middleware';
 import { corsMiddleware } from '../middlewares/credentials.middleware';
 import {
+    editAmountClient,
     createClient,
     updateClient,
     deleteClient,
@@ -20,7 +21,8 @@ const router = express.Router();
 router.post('/:userId', corsMiddleware, requireAuth, authenticateUser, createClient);
 router.get('/:userId', corsMiddleware, requireAuth, authenticateUser, getClientsByUserId);
 router.get('/informations/:clientId', corsMiddleware, requireAuth, authenticateUser, getClientById);
-router.delete('/:client', corsMiddleware, requireAuth, authenticateUser, deleteClient)
-router.put('/:client', corsMiddleware, requireAuth, authenticateUser, updateClient)
+router.delete('/:clientId', corsMiddleware, requireAuth, authenticateUser, deleteClient)
+router.put('/:clientId', corsMiddleware, requireAuth, authenticateUser, updateClient)
+router.put('/amount/:clientId', corsMiddleware, requireAuth, authenticateUser, editAmountClient)
 
 export default router;

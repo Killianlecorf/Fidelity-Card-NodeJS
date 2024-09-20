@@ -30,8 +30,8 @@ const userSchema = new Schema<IUser>({
     }
   ],
   modality: {
-    amountMax: { type: Number},
-    amountReduction: { type:Number }
+    amountMax: { type: Number, required: true},
+    amountReduction: { type:Number, required: true }
   }
 });
 

@@ -44,10 +44,6 @@ const ClientSchema: Schema<IClient> = new Schema({
   userId: {
     type: String,
     required: true,
-  },
-  isAmount:{
-    type: Boolean,
-    require: true
   }
 });
 
