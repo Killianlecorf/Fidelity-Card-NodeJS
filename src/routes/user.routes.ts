@@ -23,12 +23,12 @@ router.get('/redirect', corsMiddleware, getRedirection);
 
 // Routes publiques
 router.post('/login',corsMiddleware, getUserLogin);
+router.post('/',corsMiddleware, createUser);
 
 // Routes protégées
 router.get('/', authenticateUser, getAllUsers);
 router.get('/getUser', corsMiddleware, authenticateUser, getInformationUser);
 router.get('/:id', corsMiddleware, authenticateUser, getUserById);
-router.post('/',corsMiddleware, authenticateUser, createUser);
 router.put('/:id',corsMiddleware, authenticateUser, updateUser);
 router.delete('/:id', corsMiddleware, authenticateUser, deleteUser);
 

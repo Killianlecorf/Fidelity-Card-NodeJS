@@ -3,7 +3,7 @@ import { User, IUser } from '../models/user.model';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
-import isValidEmail from '../Utils/isValidationEmail';
+import { PendingUser } from '../models/pendingUser.models';
 
 dotenv.config();
 
@@ -53,60 +53,60 @@ export const deleteCookie = (req : Request, res : Response ) => {
 
 
 export const createUser = async (req: Request, res: Response) => {
-    const userData: IUser = req.body;
-  
-    try {
-      const { email, password, name, theme } = userData;
+  const { verificationCode } = req.body;
 
-      if (!email || !password || !name || !theme) {
-        return res.status(400).json({error: 'Vous devez remplir tout les champs'})
-      }
-      
-      if (isValidEmail(email)) {
-        return res.status(400).json({error: "Veuillez saisir un bon format de mail"})
-      }
-
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        return res.status(409).json({ error: 'Cet utilisateur existe déjà.' });
-      }
-  
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-
-      const user = new User({
-        email,
-        password: hashedPassword,
-        name,
-        theme: {
-          mainColor: theme.mainColor,
-          secondaryColor: theme.secondaryColor
-        },
-        modality: {
-          amountMax: 300,
-          amountReduction: 10
-        }
-        // ... autres données de l'utilisateur
-      });
-  
-      await user.save();
-  
-      const secretKey = process.env.JWT_SECRET; 
-      const token = jwt.sign({ userId: user._id }, secretKey);
-  
-      const cookieOptions = {
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000,
-      };
-  
-      res.cookie('token', token, cookieOptions);
-  
-      res.json({ user, token });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Une erreur est survenue lors de la création de l\'utilisateur.' });
+  try {
+    if (!verificationCode ) {
+      return res.status(400).json({ error: 'Veuillez entrer votre email et code de vérification.' });
     }
-  };
+
+    const pendingUser = await PendingUser.findOne({ verificationCode });
+    if (!pendingUser) {
+      return res.status(404).json({ error: 'Code de vérification ou email incorrect.' });
+    }
+
+    const existingUser = await User.findOne({ verificationCode });
+    if (existingUser) {
+      return res.status(409).json({ error: 'Cet utilisateur existe déjà.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(pendingUser.password, 10);
+
+    const newUser = new User({
+      email: pendingUser.email,
+      password: hashedPassword,
+      name: pendingUser.name,
+      lname: pendingUser.lname,
+      theme: {
+        mainColor: "#483CE8",
+        secondaryColor: "#857df8"
+      },
+      modality: {
+        amountMax: 0,
+        amountReduction: 0
+      }
+    });
+
+    await newUser.save();
+
+    await PendingUser.deleteOne({ _id: pendingUser._id });
+
+    const secretKey = process.env.JWT_SECRET; 
+    const token = jwt.sign({ userId: newUser._id }, secretKey);
+
+    const cookieOptions = {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    };
+
+    res.cookie('token', token, cookieOptions);
+    res.status(201).json({ user: newUser, token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Une erreur est survenue lors de la création de l\'utilisateur.' });
+  }
+};
+
 
   export const getInformationUser = (req: Request, res: Response) => {
     const token = req.cookies.token; 
