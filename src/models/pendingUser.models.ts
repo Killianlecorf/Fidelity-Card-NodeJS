@@ -14,7 +14,7 @@ const pendingUserSchema: Schema = new Schema({
   password: { type: String, required: true },
   name: { type: String, required: true },
   lname: { type: String, required: true },
-  verificationCode: { type: String, required: true },
+  verificationCode: { type: String, required: true, unique: true },
   codeExpires: { type: Date, required: true },
 });
 
