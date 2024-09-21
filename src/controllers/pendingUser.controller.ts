@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { PendingUser } from '../models/pendingUser.models';
 import { sendVerificationEmail } from '../services/emailService';
 import { isValidEmail } from '../Utils/isValidationEmail';
+import { User } from '../models/user.model';
 
 export const registerUser = async (req: Request, res: Response) => {
   const { email, password, name, lname } = req.body;
@@ -15,6 +16,11 @@ export const registerUser = async (req: Request, res: Response) => {
 
     if (!isValidEmail(email)) {
       return res.status(400).json({ error: "Veuillez saisir un bon format d'email." });
+    }
+
+    const registeredUser = await User.findOne({ email });
+    if (registeredUser) {
+      return res.status(409).json({ error: 'Cet email a déjà un compte enregistré.' });
     }
 
     const existingUser = await PendingUser.findOne({ email });
